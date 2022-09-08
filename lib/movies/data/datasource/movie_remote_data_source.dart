@@ -2,6 +2,7 @@
 
 import 'package:clean_arc_app/movies/data/models/movie_details_model.dart';
 import 'package:clean_arc_app/movies/data/models/movie_model.dart';
+import 'package:clean_arc_app/movies/data/models/recommendationModel.dart';
 import 'package:clean_arc_app/movies/domain/usecase/get_movie_details_data.dart';
 import 'package:dio/dio.dart';
 
@@ -13,6 +14,7 @@ abstract class BaseMovieRemoteDataSource{
   Future<List<MovieModel>> getPopularMovies();
   Future<List<MovieModel>> getTopRatedMovies();
   Future<MovieDetailsModel> getMovieDetailsData(MovieDetailsParameter parameter);
+  Future<List<RecommendationModel>> getRecommendationMovies(MovieDetailsParameter parameter);
 }
 class MovieRemoteDataSource extends BaseMovieRemoteDataSource {
   @override
@@ -70,6 +72,18 @@ class MovieRemoteDataSource extends BaseMovieRemoteDataSource {
       {
         throw ServerException(errorMessageModel: ErrorMessageModel.fromJson(response.data));
       }
+  }
+
+  @override
+  Future<List<RecommendationModel>> getRecommendationMovies(MovieDetailsParameter parameter)async {
+    final response=await Dio().get(AppContances.moviesRecommendation(parameter.movieId));
+    print(response.data);
+
+    if(response.statusCode==200){
+      return List<RecommendationModel>.from((response.data["results"] as List).map((e) => RecommendationModel.fromJson(e)));
+    }else{
+      throw ServerException(errorMessageModel: ErrorMessageModel.fromJson(response.data));
+    }
   }
 
 }

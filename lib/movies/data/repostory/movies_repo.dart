@@ -3,6 +3,7 @@ import 'package:clean_arc_app/core/error/failure.dart';
 import 'package:clean_arc_app/movies/data/datasource/movie_remote_data_source.dart';
 import 'package:clean_arc_app/movies/domain/entites/movie.dart';
 import 'package:clean_arc_app/movies/domain/entites/movie_details.dart';
+import 'package:clean_arc_app/movies/domain/entites/recimmendation.dart';
 import 'package:clean_arc_app/movies/domain/usecase/get_movie_details_data.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/cupertino.dart';
@@ -58,6 +59,17 @@ class MoviesRepository extends BaseMovieRepository{
    on ServerException catch(failure) {
     return Left(ServerFailure(failure.errorMessageModel.statusMessage));
    }
+  }
+
+  @override
+  Future<Either<Failure, List<BaseRecommendation>>> getRecommendationMovies(MovieDetailsParameter parameter) async{
+   final result=await baseMovieRemoteDataSource.getRecommendationMovies(parameter);
+   try{
+    return Right(result);
+   }on ServerException catch(failure){
+    return Left(ServerFailure(failure.errorMessageModel.statusMessage));
+   }
+
   }
 
 

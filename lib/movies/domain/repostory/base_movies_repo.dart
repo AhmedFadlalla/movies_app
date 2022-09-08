@@ -1,4 +1,5 @@
 import 'package:clean_arc_app/movies/domain/entites/movie_details.dart';
+import 'package:clean_arc_app/movies/domain/entites/recimmendation.dart';
 import 'package:dartz/dartz.dart';
 
 import '../../../core/error/failure.dart';
@@ -10,5 +11,6 @@ abstract class BaseMovieRepository{
   Future<Either<Failure,List<BaseMovie>>> getPopularMovies();
   Future<Either<Failure,List<BaseMovie>>> getTopRatedMovies();
 
-  Future<Either<Failure,BaseMovieDetails>> getMovieDetailsData(MovieDetailsParameter parameter) ;
+  Future<Either<Failure,BaseMovieDetails>> getMovieDetailsData(MovieDetailsParameter parameter);
+  Future<Either<Failure,List<BaseRecommendation>>> getRecommendationMovies(MovieDetailsParameter parameter);
 }
